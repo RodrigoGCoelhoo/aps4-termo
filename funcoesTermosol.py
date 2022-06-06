@@ -29,7 +29,7 @@ geraSaida(nome,Ft,Ut,Epsi,Fi,Ti)
 -------------------------------------------------------------------------------
 
 """
-def plota(N,Inc):
+def plota(N,Inc,title,forcas=[], hasGrid=True):
     # Numero de membros
     nm = len(Inc[:,0])
     
@@ -46,11 +46,24 @@ def plota(N,Inc):
         n2 = int(Inc[i,1])        
 
         plt.plot([N[0,n1-1],N[0,n2-1]],[N[1,n1-1],N[1,n2-1]],color='r',linewidth=3)
-
-
+    
+    if len(forcas) != 0:
+        for i in range(len(forcas)):
+            if forcas[i] != 0:
+                plt.plot(N[0][i//2], N[1,i//2], "ko")
+                if forcas[i] < 0:
+                    l = 0.05*forcas[i][0]/1000
+                    if i % 2 == 0:
+                        plt.arrow(N[0][i//2] - l, N[1,i//2], l+0.01, 0, width=0.004, length_includes_head=True, color="black")
+                        plt.text(N[0][i//2] - l + 0.01, N[1,i//2], str(-1*int(forcas[i][0])), bbox=dict(facecolor='white', edgecolor='black', alpha=0.9))
+                    else:
+                        plt.arrow(N[0][i//2], N[1,i//2] - l, 0, l+0.01, width=0.004, length_includes_head=True, color="black")
+                        plt.text(N[0][i//2], N[1,i//2] - l + 0.01, str(-1*int(forcas[i][0])), bbox=dict(facecolor='white', edgecolor='black', alpha=0.9))
+    
+    plt.title(title)
     plt.xlabel('x [m]')
     plt.ylabel('y [m]')
-    plt.grid(True)
+    plt.grid(hasGrid)
     plt.axis('equal')
     plt.show()
     
